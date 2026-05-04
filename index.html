@@ -1,1 +1,494 @@
-Hello World (Site in construction)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maya Soleil — Yoga Instructor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --clay:    #c4a882;
+      --bark:    #5c4033;
+      --moss:    #7a8c6e;
+      --dusk:    #3b3530;
+      --cream:   #faf7f2;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--dusk);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    /* decorative circle */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 42%;
+      transform: translate(-50%, -50%);
+      width: min(70vw, 600px);
+      height: min(70vw, 600px);
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 40% 40%, #ddd3c0 0%, #c9b99a 60%, transparent 100%);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .hero-text {
+      padding: 6rem 4rem 6rem 8vw;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 1s ease both;
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.78rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1.4rem;
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.05;
+      color: var(--bark);
+      margin-bottom: 0.2rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--clay);
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--moss);
+      margin: 1.6rem 0 2.4rem;
+      letter-spacing: 0.02em;
+    }
+
+    .bio {
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #5a4f47;
+      max-width: 440px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Book Me button ── */
+    .btn-book {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.95rem 2.2rem;
+      background: var(--bark);
+      color: var(--sand);
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s, color 0.3s;
+      overflow: hidden;
+    }
+
+    .btn-book::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--clay);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .btn-book:hover::after { transform: scaleX(1); }
+    .btn-book:hover { color: #fff; }
+
+    .btn-book span { position: relative; z-index: 1; }
+
+    .btn-book svg {
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s;
+    }
+    .btn-book:hover svg { transform: translateX(4px); }
+
+    /* ── Visual side ── */
+    .hero-visual {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      animation: fadeUp 1.2s 0.2s ease both;
+    }
+
+    .pose-card {
+      position: relative;
+      width: min(340px, 80%);
+    }
+
+    /* SVG yoga figure */
+    .pose-svg-wrap {
+      background: linear-gradient(160deg, #e8ddd0 0%, #d4c4b0 100%);
+      border-radius: 2px;
+      aspect-ratio: 3/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 12px 20px 60px rgba(92,64,51,0.18);
+    }
+
+    .pose-card::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid var(--clay);
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .card-label {
+      margin-top: 1.2rem;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--clay);
+      text-align: center;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.4rem;
+      padding: 0 8vw;
+      opacity: 0.4;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--clay);
+    }
+    .divider-leaf {
+      font-size: 1.1rem;
+    }
+
+    /* ── SCHEDULE SECTION ── */
+    #schedule {
+      padding: 7rem 8vw;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.8s ease both;
+      animation-play-state: paused;
+    }
+
+    #schedule.visible { animation-play-state: running; }
+
+    .section-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: var(--bark);
+      margin-bottom: 3.5rem;
+    }
+
+    .section-title em { font-style: italic; color: var(--clay); }
+
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .class-card {
+      background: white;
+      padding: 2rem 1.8rem;
+      border-left: 3px solid var(--clay);
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: default;
+    }
+
+    .class-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(92,64,51,0.10);
+    }
+
+    .class-day {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 0.5rem;
+    }
+
+    .class-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--bark);
+      margin-bottom: 0.3rem;
+    }
+
+    .class-time {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--clay);
+      margin-bottom: 1rem;
+    }
+
+    .class-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #6e615a;
+    }
+
+    .class-spots {
+      display: inline-block;
+      margin-top: 1.2rem;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--moss);
+      border: 1px solid var(--moss);
+      padding: 0.28rem 0.7rem;
+      border-radius: 99px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 3rem 8vw;
+      border-top: 1px solid rgba(196,168,130,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--clay);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: #a89585;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 760px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: unset;
+      }
+      .hero-visual { height: 55vw; min-height: 260px; }
+      .hero-text { padding: 4rem 6vw 3rem; }
+      .pose-card { width: min(200px, 60%); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Certified Yoga Instructor · Since 2014</p>
+    <h1>Maya<br><em>Soleil</em></h1>
+    <p class="tagline">Move gently. Breathe deeply. Come home to yourself.</p>
+    <p class="bio">
+      I guide students of all levels through a practice rooted in stillness and
+      intention. After a decade of study across Bali, Mysore, and the mountains
+      of Colorado, I returned home with one simple belief: yoga isn't something
+      you do — it's something you remember. My classes blend Hatha fundamentals
+      with slow flow sequences, creating space for both the beginner and the
+      seasoned practitioner to arrive exactly where they are.
+    </p>
+    <a class="btn-book" href="#schedule">
+      <span>Book me</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="hero-visual">
+    <div class="pose-card">
+      <div class="pose-svg-wrap">
+        <!-- Inline SVG: stylised yoga pose (warrior II silhouette) -->
+        <svg viewBox="0 0 220 300" xmlns="http://www.w3.org/2000/svg" width="80%">
+          <g fill="none" stroke="#5c4033" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Head -->
+            <circle cx="110" cy="42" r="18" fill="#c4a882" stroke="none" opacity="0.7"/>
+            <!-- Body -->
+            <line x1="110" y1="60" x2="110" y2="145" stroke="#7a8c6e" stroke-width="4"/>
+            <!-- Left arm (extended) -->
+            <line x1="110" y1="90" x2="40"  y2="115" stroke="#5c4033" stroke-width="3.5"/>
+            <circle cx="40" cy="115" r="5" fill="#c4a882" stroke="none"/>
+            <!-- Right arm (extended) -->
+            <line x1="110" y1="90" x2="180" y2="115" stroke="#5c4033" stroke-width="3.5"/>
+            <circle cx="180" cy="115" r="5" fill="#c4a882" stroke="none"/>
+            <!-- Left leg (lunge) -->
+            <line x1="110" y1="145" x2="55"  y2="230" stroke="#7a8c6e" stroke-width="4"/>
+            <line x1="55"  y1="230" x2="45"  y2="270" stroke="#5c4033" stroke-width="3"/>
+            <!-- Right leg (straight back) -->
+            <line x1="110" y1="145" x2="165" y2="225" stroke="#7a8c6e" stroke-width="4"/>
+            <line x1="165" y1="225" x2="175" y2="270" stroke="#5c4033" stroke-width="3"/>
+            <!-- Ground line -->
+            <line x1="30" y1="272" x2="190" y2="272" stroke="#c4a882" stroke-width="1.5" opacity="0.5"/>
+          </g>
+        </svg>
+      </div>
+      <p class="card-label">Warrior II · Find your ground</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-leaf">✦</span></div>
+
+<!-- ══════════════ SCHEDULE ══════════════ -->
+<section id="schedule">
+  <p class="section-label">Weekly Schedule</p>
+  <h2 class="section-title">Come practice<br><em>with me</em></h2>
+
+  <div class="schedule-grid">
+
+    <div class="class-card">
+      <p class="class-day">Sunday</p>
+      <p class="class-name">Morning Flow</p>
+      <p class="class-time">10:00 AM – 11:15 AM</p>
+      <p class="class-desc">
+        A gentle, grounding sequence to open your week. We move through sun
+        salutations, standing poses, and finish with a long, restoring savasana.
+        Suitable for all levels.
+      </p>
+      <span class="class-spots">6 spots left</span>
+    </div>
+
+    <div class="class-card">
+      <p class="class-day">Tuesday</p>
+      <p class="class-name">Slow Hatha</p>
+      <p class="class-time">7:00 PM – 8:15 PM</p>
+      <p class="class-desc">
+        We linger in each shape, exploring breath and alignment. Perfect for
+        building a strong foundation or deepening an existing practice.
+        Props provided.
+      </p>
+      <span class="class-spots">4 spots left</span>
+    </div>
+
+    <div class="class-card">
+      <p class="class-day">Thursday</p>
+      <p class="class-name">Yin & Restore</p>
+      <p class="class-time">6:30 PM – 7:45 PM</p>
+      <p class="class-desc">
+        Long-held, passive postures supported by bolsters and blankets. A
+        meditative practice for the nervous system and the connective tissue.
+        Deeply nourishing.
+      </p>
+      <span class="class-spots">8 spots left</span>
+    </div>
+
+    <div class="class-card">
+      <p class="class-day">Saturday</p>
+      <p class="class-name">Vinyasa Flow</p>
+      <p class="class-time">9:00 AM – 10:15 AM</p>
+      <p class="class-desc">
+        A dynamic, breath-led class linking movement and rhythm. Expect creative
+        sequencing, playful transitions, and a full-body awakening. Intermediate
+        level recommended.
+      </p>
+      <span class="class-spots">3 spots left</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <span class="footer-name">Maya Soleil</span>
+  <span class="footer-copy">© 2026 · All rights reserved</span>
+</footer>
+
+<script>
+  // Animate schedule section on scroll
+  const schedule = document.getElementById('schedule');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  observer.observe(schedule);
+</script>
+</body>
+</html>
